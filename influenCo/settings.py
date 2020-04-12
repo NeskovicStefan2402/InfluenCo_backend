@@ -4,7 +4,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#^li4#(pm4-oga093*u6fwbsetgmus$bicqp4x+uvz5qfoz7ag'
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.166','localhost']
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -14,10 +14,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'influencer',
-    'company'
+    'company',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -29,6 +31,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'influenCo.urls'
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {

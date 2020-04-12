@@ -1,34 +1,30 @@
 import urllib.request
 import requests
-# from influenCo.settings import MEDIA_ROOT
+from influenCo.settings import MEDIA_ROOT
 import json
 from bs4 import BeautifulSoup
 def youtubeSubscribers(name):
     key = "AIzaSyA8e2wuvlNnZpFubhTVuxfEL2KLzZYu4Wc"
-    data = urllib.request.urlopen("https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername="+name+"&key="+key).read()
+    data = urllib.request.urlopen("https://www.googleapis.com/youtube/v3/channels?part=statistics&id=UCG8rbF3g2AMX70yOd8vqIZg&key="+key).read()
     subs = json.loads(data)["items"][0]["statistics"]["subscriberCount"]
     return int(subs)
 
+def instagramFollowers(name):
+    data = urllib.request.urlopen('https://www.instagram.com/'+name+'/?__a=1').read()
+    followers = json.loads(data)["graphql"]['user']["edge_followed_by"]["count"]
+    return int(followers)
+
+
 def facebookImage(url,email):
-    soup = BeautifulSoup(urllib.request.urlopen(url))
-    image_path=MEDIA_ROOT+'/'+str(email).replace('.','')+'.jpg'
     default_image_url='https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'
+    image_path=MEDIA_ROOT+'/'+str(email).replace('.','')+'.jpg'
+        
     try:
+        soup = BeautifulSoup(urllib.request.urlopen(url))
         urllib.request.urlretrieve(soup.find('img',{'class':'_11kf img'})['src'],image_path)
+        print('Ucitao sliku')
     except Exception as e:
         print(e)
-        urllib.request.urlretrieve(default_image_url,MEDIA_ROOT+'/'+image_path)
+        urllib.request.urlretrieve(default_image_url,image_path)
 
-def facebookLikes(url):
-    # token='EAALPTeaV6x0BAE2QZBBOoGbNyQJwnDmZB9CnPb1XWegNqwAfajT4eDYtc8gHwZCmhLsMC24Ra873wEu6uiQv1cqleWi9kgXMpyMZCisbfrrC8zpVDrLquQm7JOqI1bOJ6cXEYB0o2LycGrdH2EcVszyhC7bPMQaGz5RAr6QhjlMZCL84hvSOCEBRDyuZAwTefHelPob2tzTqZBU3xv9jhaep80hHZA2a6veZASGfKJAJr6AZDZD'
-    # url='https://graph.facebook.com/'+user+'?fields=birthday,email,hometown&access_token=790883441437469 '
-    # jsonString=requests.get(url).content.decode('utf-8')
-    # jsonObject=json.loads(jsonString)
-    # print(jsonObject)
-    soup = BeautifulSoup(urllib.request.urlopen(url))
-    print(soup.find('span',{'class':'_3d0'}))
-    # # lista_a=soup.find('span',{'class':'_50f8 _2iem'}).find_all('a')
-    # for i in lista_a:
-    #     print(i.text)
-
-facebookLikes('https://www.facebook.com/stefan.neskovic.10/friends')
+# facebookImage('https://www.facebook.com/matejaa.neskovic','matejaneskovic005@gmail.com')

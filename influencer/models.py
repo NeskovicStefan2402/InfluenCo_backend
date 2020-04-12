@@ -34,3 +34,14 @@ class Interest(models.Model):
 
     def __str__(self):
         return self.name 
+
+class Post(models.Model):
+    image=models.ImageField(upload_to='post/')
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name 
+
+class Document(models.Model):
+    docfile = models.FileField(upload_to='documents/%Y/%m/%d')
+

@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from influencer.views import getInfluencers,getImage,login,signUp
+from influencer.views import getInfluencers,getImage,login,signUp,getInterests,uploadImage,updateInfluencer
 from company.views import getCompanies
 
 urlpatterns = [
@@ -27,6 +27,9 @@ urlpatterns = [
     path('getImage/',getImage),
     path('getCompanies/',getCompanies),
     path('loginInfluencer/',csrf_exempt(login)),
-    path('signUp/',csrf_exempt(signUp)),
+    path('signUpInfluencer/',csrf_exempt(signUp)),
+    path('getInterests/',getInterests),
+    path('uploadImage/',csrf_exempt(uploadImage)),
+    path('updateInfluencer/',csrf_exempt(updateInfluencer))
     
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

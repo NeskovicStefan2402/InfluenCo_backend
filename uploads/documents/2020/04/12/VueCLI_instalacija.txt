@@ -1,0 +1,11 @@
+// install cli // npm install -g vue cli
+// create project template //  vue init webpack-simple nazivProjekta(naziv moze biti kakav god)
+project name? stagod
+description? ...
+author? ...
+
+cd nazivProjekta
+npm install
+//pokretanje servera// npm run dev 
+
+

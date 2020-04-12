@@ -16,3 +16,13 @@ class TypeCompany(models.Model):
 
     def __str__(self):
         return self.name
+
+class Job(models.Model):
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='jobs/')
+    description = models.TextField()
+    price = models.FloatField()
+    company = models.ForeignKey('Company',on_delete=models.SET_NULL,null=True)
+
+    def __str__(self):
+        return self.name
