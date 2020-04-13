@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.conf import settings
 from .other import facebookImage
 import json
+from company.views import get_interests_for_influencer
 from django.http import JsonResponse,HttpResponse,HttpResponseNotFound
 from django.core.serializers import serialize
 from django.conf.urls.static import static
@@ -48,6 +49,7 @@ def login(request):
         email_data=body['email']
         password_data=body['password']
         influencer=Influencer.objects.filter(email=email_data).first()
+        
         if influencer :
             serialize_influencer=serialize('json',[influencer])
             if influencer.password==password_data:

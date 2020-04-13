@@ -1,5 +1,5 @@
 from django.db import models
-
+from influencer import models as influencer_models
 class Company(models.Model):
     name = models.CharField(max_length=50)
     logo = models.ImageField(upload_to ='uploads/')
@@ -23,6 +23,15 @@ class Job(models.Model):
     description = models.TextField()
     price = models.FloatField()
     company = models.ForeignKey('Company',on_delete=models.SET_NULL,null=True)
+    selected = models.ForeignKey('influencer.Influencer',on_delete=models.SET_NULL,null=True,blank=True)
 
     def __str__(self):
         return self.name
+
+class Interests_for_job(models.Model):
+    job = models.ForeignKey('Job',on_delete=models.SET_NULL,null=True)
+    influencer = models.ForeignKey('influencer.Influencer',on_delete=models.SET_NULL,null=True,blank = True)
+
+    def __str__(self):
+        return self.job.name+'  -  '+self.influencer.first_name+' '+self.influencer.last_name
+
