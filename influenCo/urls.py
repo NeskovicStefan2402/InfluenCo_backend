@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from influencer.views import getInfluencers,getImage,login,signUp,getInterests,uploadImage,updateInfluencer
-from company.views import getCompanies,get_active_jobs,set_interest_for_job,get_interests_for_influencer
+from company.views import getCompanies,get_active_jobs,set_interest_for_job,get_interests_for_influencer,get_types
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,5 +33,6 @@ urlpatterns = [
     path('updateInfluencer/',csrf_exempt(updateInfluencer)),
     path('getActiveJobs/',csrf_exempt(get_active_jobs)),
     path('setInterestForJob/',csrf_exempt(set_interest_for_job)),
-    path('getInterestsForInfluencer/<int:id>',csrf_exempt(get_interests_for_influencer))
+    path('getInterestsForInfluencer/<int:id>',csrf_exempt(get_interests_for_influencer)),
+    path('getCompanyTypes/',csrf_exempt(get_types))
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
