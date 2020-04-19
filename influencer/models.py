@@ -2,13 +2,13 @@ from django.db import models
 
 class Influencer(models.Model):
     image = models.ImageField(upload_to ='uploads/')
-    instagram = models.CharField(max_length=50)
+    instagram = models.CharField(max_length=50,blank=True)
     instagram_followers=models.IntegerField()
-    facebook = models.CharField(max_length=50)
+    facebook = models.CharField(max_length=50,blank=True)
     facebook_likes=models.IntegerField()
-    youtube = models.CharField(max_length=50)
+    youtube = models.CharField(max_length=50,blank=True)
     youtube_subscribers=models.IntegerField()
-    twitter = models.CharField(max_length=50)
+    twitter = models.CharField(max_length=50,blank=True)
     twitter_followers=models.IntegerField()
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30) 

@@ -18,15 +18,14 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from influencer.views import getInfluencers,getImage,login,signUp,getInterests,uploadImage,updateInfluencer
-from company.views import getCompanies,get_active_jobs,set_interest_for_job,get_interests_for_influencer,get_types
+from influencer.views import getInfluencers,loginInfluencer,signUp,getInterests,uploadImage,updateInfluencer
+from company.views import getCompanies,get_active_jobs,set_interest_for_job,get_interests_for_influencer,get_types,loginCompany,getPopularInfluencers,get_jobs_for_company,updateCompany
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('getInfluencers/',getInfluencers),
-    path('getImage/',getImage),
     path('getCompanies/',getCompanies),
-    path('loginInfluencer/',csrf_exempt(login)),
+    path('loginInfluencer/',csrf_exempt(loginInfluencer)),
     path('signUpInfluencer/',csrf_exempt(signUp)),
     path('getInterests/',getInterests),
     path('uploadImage/',csrf_exempt(uploadImage)),
@@ -34,5 +33,9 @@ urlpatterns = [
     path('getActiveJobs/',csrf_exempt(get_active_jobs)),
     path('setInterestForJob/',csrf_exempt(set_interest_for_job)),
     path('getInterestsForInfluencer/<int:id>',csrf_exempt(get_interests_for_influencer)),
-    path('getCompanyTypes/',csrf_exempt(get_types))
+    path('getCompanyTypes/',csrf_exempt(get_types)),
+    path('loginCompany/',csrf_exempt(loginCompany)),
+    path('getPopularInfluencers',getPopularInfluencers),
+    path('getJobsForCompany/<int:id>',get_jobs_for_company),
+    path('updateCompany/',csrf_exempt(updateCompany))
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

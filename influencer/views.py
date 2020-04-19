@@ -15,12 +15,7 @@ def getInfluencers(request):
     influencers=Influencer.objects.all()
     datas=serialize('json',influencers,fields=('first_name','last_name','age','interest','level','image'))
     return HttpResponse(datas,content_type='application/json')
-    # return JsonResponse(datas,safe=False)
-
-def getImage(request):
-    data=Influencer.objects.get(id=1)
-    return render(request,'gallery.html',{"image":'cocaCola.jpg', 'media_url':settings.MEDIA_URL})
-
+  
 def updateInfluencer(request):
     if request.method=='POST':
         try:
@@ -42,7 +37,7 @@ def updateInfluencer(request):
             print(e)
             return HttpResponse({'Error':'We have problem, because: '+str(e)},content_type='application/json',status=401)
 
-def login(request):
+def loginInfluencer(request):
     if request.method=='POST':
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
