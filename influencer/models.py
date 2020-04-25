@@ -1,7 +1,7 @@
 from django.db import models
 
 class Influencer(models.Model):
-    image = models.ImageField(upload_to ='uploads/')
+    image = models.ImageField(upload_to ='influencers/')
     instagram = models.CharField(max_length=50,blank=True)
     instagram_followers=models.IntegerField()
     facebook = models.CharField(max_length=50,blank=True)
@@ -42,6 +42,4 @@ class Post(models.Model):
     def __str__(self):
         return self.name 
 
-class Document(models.Model):
-    docfile = models.FileField(upload_to='documents/%Y/%m/%d')
 

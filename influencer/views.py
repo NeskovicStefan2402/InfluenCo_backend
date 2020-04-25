@@ -9,7 +9,6 @@ from django.conf.urls.static import static
 from django.conf import settings
 from .models import Influencer,Interest,Level
 
-from .models import Document
 
 def getInfluencers(request):
     influencers=Influencer.objects.all()
@@ -71,7 +70,7 @@ def signUp(request):
                 
                 print('Ne postoji')
                 image=facebookImage(body['facebook'],body['email'])
-                Influencer.objects.create(first_name=body['first_name'],last_name=body['last_name'],email=body['email'],age=body['age'],interest=interest,level=level,youtube=body['youtube'],facebook=body['facebook'],instagram=body['instagram'],twitter=body['twitter'],password=body['password'],facebook_likes=0,youtube_subscribers=0,instagram_followers=0,twitter_followers=0,image='uploads/'+body['email'].replace('.','')+'.jpg') 
+                Influencer.objects.create(first_name=body['first_name'],last_name=body['last_name'],email=body['email'],age=body['age'],interest=interest,level=level,youtube=body['youtube'],facebook=body['facebook'],instagram=body['instagram'],twitter=body['twitter'],password=body['password'],facebook_likes=0,youtube_subscribers=0,instagram_followers=0,twitter_followers=0,image='influencers/'+body['email'].replace('.','')+'.jpg') 
                 return JsonResponse({'Message':'Correct insert!'},status=200)
         except Exception as e:
             print(str(e))
@@ -85,8 +84,10 @@ def getInterests(request):
         intersts_serizalize=serialize('json',intersts)
         return HttpResponse(intersts_serizalize,content_type='application/json')
 
-def uploadImage(request):
+def postInfluencerImage(request,id):
     if request.method=='POST':
-        newdoc = Document(docfile = request.FILES['image'])
-        newdoc.save()
-        return JsonResponse({'Poruka':'OK!'},status=200)
+        print(request.FILES['image'])
+        influencer=Influencer.objects.get(id=id)
+        influencer.image=request.FILES['image']
+        influencer.save()
+        return HttpResponse(serialize('json',[influencer]),content_type='application/json',status=200)

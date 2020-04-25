@@ -17,14 +17,12 @@ def instagramFollowers(name):
 
 def facebookImage(url,email):
     default_image_url='https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'
-    image_path=MEDIA_ROOT+'/'+str(email).replace('.','')+'.jpg'
+    image_path=MEDIA_ROOT+'/influencers/'+str(email).replace('.','')+'.jpg'
         
     try:
-        soup = BeautifulSoup(urllib.request.urlopen(url))
+        soup = BeautifulSoup(urllib.request.urlopen('https://www.facebook.com/'+url))
         urllib.request.urlretrieve(soup.find('img',{'class':'_11kf img'})['src'],image_path)
         print('Ucitao sliku')
     except Exception as e:
         print(e)
         urllib.request.urlretrieve(default_image_url,image_path)
-
-# facebookImage('https://www.facebook.com/matejaa.neskovic','matejaneskovic005@gmail.com')

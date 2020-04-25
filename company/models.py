@@ -2,7 +2,7 @@ from django.db import models
 from influencer import models as influencer_models
 class Company(models.Model):
     name = models.CharField(max_length=50)
-    logo = models.ImageField(upload_to ='uploads/')
+    logo = models.ImageField(upload_to ='companies/')
     desription = models.TextField()
     idNumber = models.CharField(max_length=30)
     password = models.CharField(max_length=20)

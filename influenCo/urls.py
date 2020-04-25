@@ -18,8 +18,9 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from influencer.views import getInfluencers,loginInfluencer,signUp,getInterests,uploadImage,updateInfluencer
-from company.views import getCompanies,get_active_jobs,set_interest_for_job,get_interests_for_influencer,get_types,loginCompany,getPopularInfluencers,get_jobs_for_company,updateCompany
+from influencer.views import getInfluencers,loginInfluencer,signUp,getInterests,updateInfluencer,postInfluencerImage
+from company.views import getCompanies,get_active_jobs,set_interest_for_job,get_interests_for_influencer,get_types,loginCompany,getPopularInfluencers,get_jobs_for_company,updateCompany,postJob,postCompanyLogo,postJobImage
+from company.views import signUpCompany,updateJob,deleteJob,get_influencers_for_active_job,finish_job
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,7 +29,6 @@ urlpatterns = [
     path('loginInfluencer/',csrf_exempt(loginInfluencer)),
     path('signUpInfluencer/',csrf_exempt(signUp)),
     path('getInterests/',getInterests),
-    path('uploadImage/',csrf_exempt(uploadImage)),
     path('updateInfluencer/',csrf_exempt(updateInfluencer)),
     path('getActiveJobs/',csrf_exempt(get_active_jobs)),
     path('setInterestForJob/',csrf_exempt(set_interest_for_job)),
@@ -37,5 +37,14 @@ urlpatterns = [
     path('loginCompany/',csrf_exempt(loginCompany)),
     path('getPopularInfluencers',getPopularInfluencers),
     path('getJobsForCompany/<int:id>',get_jobs_for_company),
-    path('updateCompany/',csrf_exempt(updateCompany))
+    path('updateCompany/',csrf_exempt(updateCompany)),
+    path('postJob/',csrf_exempt(postJob)),
+    path('uploadImage/job/<int:id>',csrf_exempt(postJobImage)),
+    path('uploadImage/influencer/<int:id>',csrf_exempt(postInfluencerImage)),
+    path('uploadImage/company/<int:id>',csrf_exempt(postCompanyLogo)),
+    path('signUpCompany/',csrf_exempt(signUpCompany)),
+    path('updateJob/',csrf_exempt(updateJob)),
+    path('deleteJob/<int:id>',csrf_exempt(deleteJob)),
+    path('getInfluencersForActiveJob/<int:id>',csrf_exempt(get_influencers_for_active_job)),
+    path('finishJob/',csrf_exempt(finish_job))
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

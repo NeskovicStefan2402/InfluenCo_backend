@@ -3,6 +3,7 @@ from influencer.models import Influencer
 from django.http import JsonResponse,HttpResponse
 from django.core.serializers import serialize
 from .models import Company,Job,Interests_for_job,TypeCompany
+from .other import default_image
 import json
 
 def getCompanies(request):
@@ -117,4 +118,88 @@ def updateCompany(request):
             return HttpResponse(ser_company, content_type='application/json',status=200)
         else:
            return HttpResponse({'Error':'This company dont exist!'}, content_type='application/json',status=401)
-         
+
+def postCompanyLogo(request,id):
+    if request.method=='POST':
+        print(request.FILES['image'])
+        company=Company.objects.get(id=id)
+        company.logo=request.FILES['image']
+        company.save()
+        return HttpResponse(serialize('json',[company]),content_type='application/json',status=200)
+
+def postJobImage(request,id):
+    if request.method=='POST':
+        print(request.FILES['image'])
+        job=Job.objects.get(id=id)
+        job.image=request.FILES['image']
+        job.save()
+        return HttpResponse(serialize('json',[job]),content_type='application/json',status=200)
+
+def signUpCompany(request):
+    if request.method=='POST':
+        body_u=request.body.decode('utf-8')
+        body=json.loads(body_u)
+        company=Company.objects.filter(idNumber = body['idNumber']).first()
+        if company:
+            return HttpResponse({'Error':'This company already exist!'},content_type='application/json',status=401)
+        else:
+            default_image(body['name'])
+            type = TypeCompany.objects.get(id=body['type'])
+            company=Company.objects.create(name=body['name'] , idNumber=body['idNumber'], desription = body['description'], password = body['password'] , type = type ,logo='companies/'+str(body['name']).replace('.','')+'.jpg') 
+            return HttpResponse(serialize('json',[company]),content_type='application/json',status=200)
+
+def postJob(request):
+    if request.method=='POST':
+        body_u=request.body.decode('utf-8')
+        body=json.loads(body_u)
+        # try:
+        company=Company.objects.get(id=body['company'])
+        job_int=Job.objects.filter(name=body['name']).first()
+        if job_int:
+            return HttpResponse({'Error':'This job already exist!'},content_type='application/json',status=401)
+        else:
+            job=Job.objects.create(name=body['name'],description=body['description'],price=body['price'],company=company,selected=None)
+            return HttpResponse(serialize('json',[job]),content_type='application/json',status=200)
+        # except Exception as e:
+        #     return HttpResponse({'Error':str(e)},content_type='application/json',status=401)
+
+def updateJob(request):
+    if request.method=='POST':
+        body_unicode=request.body.decode('utf-8')
+        body=json.loads(body_unicode)
+        job = Job.objects.get(id = body['id'])
+        if job:
+            job.name = body['name']
+            job.description = body['description']
+            job.price = body['price']
+            job.save()
+            return HttpResponse(serialize('json',[job]),content_type='application/json',status=200)
+        else:
+            return httpResponse({'Error':'Job dont exist!'},content_type='application/json',status=400)
+
+def deleteJob(request,id):
+    if request.method == 'POST':
+        job = Job.objects.get(id=id)
+        if job:
+            job.delete()
+            return HttpResponse({'Success':'Successfully delete job!'},content_type='application/json',status=200)
+        else:
+            return HttpResponse({'Error':'Job dont exist!'},content_type='application/json',status=400)
+
+def get_influencers_for_active_job(request,id):
+    if request.method == 'GET':
+        lista = []
+        for i in Interests_for_job.objects.all():
+            if i.job.id == id:
+                lista.append(i.influencer)  
+        return  HttpResponse(serialize('json',lista),content_type='spplication/json',status=200)
+
+def finish_job(request):
+    if request.method == 'POST':
+        body_unicode = request.body.decode('utf-8')
+        body=json.loads(body_unicode)
+        job = Job.objects.get(id=body['id'])
+        influencer = Influencer.objects.get(id = body['influencer'])
+        job.selected = influencer
+        job.save()
+        return HttpResponse({'Success':'This job is finished!'},content_type='application/json',status=200)
