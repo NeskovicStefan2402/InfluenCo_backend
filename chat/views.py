@@ -54,14 +54,16 @@ def post_message(request):
         try:
             chat = Chat.objects.get(id = body['id_chats'])
         except:
-            chat = Chat.objects.create(influencer = influencer, company = company)
+            chat = Chat.objects.filter(influencer = influencer ,company = company)
+            if len(chat)==0:
+                chat = Chat.objects.create(influencer = influencer, company = company)
         sendInfluencer = True if body['send']== 'influencer' else False  
         sendCompany = False if body['send']== 'influencer' else True  
         
         messages = Message.objects.filter(chat = chat,sendInfluencer=sendCompany)
         if len(messages):
-            print(messages.order_by('-created')[0].text)
-            messages.order_by('-created')[0].seen = True
-            messages.order_by('-created')[0].save()
+            mess = messages.order_by('-created')[0] 
+            mess.seen= True
+            mess.save()
         message = Message.objects.create(chat = chat , created = datetime.now(), text = body['text'],sendInfluencer = sendInfluencer,sendCompany = sendCompany)
         return get_messages(chat.id)

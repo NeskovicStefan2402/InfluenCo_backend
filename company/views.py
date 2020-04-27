@@ -191,7 +191,8 @@ def get_influencers_for_active_job(request,id):
         lista = []
         for i in Interests_for_job.objects.all():
             if i.job.id == id:
-                lista.append(i.influencer)  
+                lista.append(i.influencer)
+        print(lista)  
         return  HttpResponse(serialize('json',lista),content_type='spplication/json',status=200)
 
 def finish_job(request):
