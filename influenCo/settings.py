@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'influencer',
     'company',
     'corsheaders',
+    'chat'
 ]
 
 MIDDLEWARE = [

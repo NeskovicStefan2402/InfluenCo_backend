@@ -9,7 +9,7 @@ class Company(models.Model):
     type = models.ForeignKey('TypeCompany',on_delete=models.SET_NULL,null=True)
 
     def __str__(self):
-        return self.name
+        return self.name + ' -> ' + str(self.pk)
 
 class TypeCompany(models.Model):
     name = models.CharField(max_length=40)

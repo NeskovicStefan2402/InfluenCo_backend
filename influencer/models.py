@@ -19,7 +19,7 @@ class Influencer(models.Model):
     level = models.ForeignKey('Level',on_delete=models.SET_NULL,null=True)
 
     def __str__(self):
-        return self.first_name+' '+self.last_name
+        return self.first_name+' '+self.last_name + '===>' + str(self.pk)
 
 class Level(models.Model):
     name = models.CharField(max_length=20)  
