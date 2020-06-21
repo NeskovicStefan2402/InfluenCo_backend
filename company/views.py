@@ -121,7 +121,6 @@ def updateCompany(request):
 
 def postCompanyLogo(request,id):
     if request.method=='POST':
-        print(request.FILES['image'])
         company=Company.objects.get(id=id)
         company.logo=request.FILES['image']
         company.save()
@@ -129,7 +128,6 @@ def postCompanyLogo(request,id):
 
 def postJobImage(request,id):
     if request.method=='POST':
-        print(request.FILES['image'])
         job=Job.objects.get(id=id)
         job.image=request.FILES['image']
         job.save()
@@ -144,8 +142,7 @@ def signUpCompany(request):
             return HttpResponse({'Error':'This company already exist!'},content_type='application/json',status=401)
         else:
             default_image(body['name'])
-            type = TypeCompany.objects.get(id=body['type'])
-            company=Company.objects.create(name=body['name'] , idNumber=body['idNumber'], desription = body['description'], password = body['password'] , type = type ,logo='companies/'+str(body['name']).replace('.','')+'.jpg') 
+            company=Company.objects.create(name=body['name'] , idNumber=body['idNumber'], desription = body['description'], password = body['password'] , type = None ,logo='companies/'+str(body['name']).replace('.','')+'.jpg') 
             return HttpResponse(serialize('json',[company]),content_type='application/json',status=200)
 
 def postJob(request):
@@ -192,7 +189,6 @@ def get_influencers_for_active_job(request,id):
         for i in Interests_for_job.objects.all():
             if i.job.id == id:
                 lista.append(i.influencer)
-        print(lista)  
         return  HttpResponse(serialize('json',lista),content_type='spplication/json',status=200)
 
 def finish_job(request):
